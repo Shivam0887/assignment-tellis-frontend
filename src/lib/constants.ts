@@ -18,7 +18,7 @@ interface SidebarTabs {
 }
 
 // REST API Endpoint
-export const BASE_URL = "https://zxsmwnmb-5000.inc1.devtunnels.ms/api";
+export const BASE_URL = "https://assignment-tellis-backend.onrender.com/api";
 
 export const SIDEBAR_TABS: SidebarTabs[] = [
   {
