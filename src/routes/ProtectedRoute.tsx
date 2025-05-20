@@ -21,6 +21,7 @@ const ProtectedRoute = ({ children }: PropsWithChildren) => {
         }
       } catch (error) {
         console.log(error);
+        navigate("/login", { replace: true });
       }
     };
 

@@ -13,6 +13,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const response = await fetch(`${BASE_URL}/auth/logout`, {
+        method: "GET",
         credentials: "include",
       });
 
@@ -25,6 +26,7 @@ const Navbar = () => {
       }
     } catch (error: unknown) {
       console.log(error);
+      toast("Error during logout. Please try again later.");
     }
   };
 
