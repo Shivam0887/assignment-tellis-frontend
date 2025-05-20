@@ -11,7 +11,7 @@ const HomePage = () => {
   const { setUser, user } = useAuth();
 
   useEffect(() => {
-    (async () => {
+    const getUser = async () => {
       try {
         const response = await fetch(`${BASE_URL}/auth`, {
           credentials: "include",
@@ -24,7 +24,9 @@ const HomePage = () => {
       } catch (error) {
         console.log(error);
       }
-    })();
+    };
+
+    getUser();
   }, [setUser]);
 
   return (

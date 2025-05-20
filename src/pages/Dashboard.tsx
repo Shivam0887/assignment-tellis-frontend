@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { useTask } from "@/providers/TaskProvider";
+import TaskProvider from "@/providers/TaskProvider";
 
 import Sidebar from "@/components/dashboard/Sidebar";
 import { Outlet } from "react-router";
@@ -8,7 +8,7 @@ import { BASE_URL } from "@/lib/constants";
 import type { Task } from "@/types/task.types";
 
 const Dashboard = () => {
-  const { setTaskState } = useTask();
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     const getTasks = async () => {
@@ -20,7 +20,7 @@ const Dashboard = () => {
         const data = await response.json();
 
         if (response.ok) {
-          setTaskState({ type: "ADD_TASK", tasks: data.data as Task[] });
+          setTasks(data.data);
         }
       } catch (error) {
         console.log(error);
@@ -28,19 +28,19 @@ const Dashboard = () => {
     };
 
     getTasks();
-
-    return () => setTaskState({ type: "REMOVE_ALL" });
-  }, [setTaskState]);
+  }, []);
 
   return (
-    <div className="h-full w-full flex">
-      <div className="h-full hidden md:block">
-        <Sidebar />
+    <TaskProvider tasks={tasks}>
+      <div className="h-full w-full flex">
+        <div className="h-full hidden md:block">
+          <Sidebar />
+        </div>
+        <main className="flex-1 p-4 sm:p-6 h-full flex flex-col">
+          <Outlet />
+        </main>
       </div>
-      <main className="flex-1 p-4 sm:p-6 h-full flex flex-col">
-        <Outlet />
-      </main>
-    </div>
+    </TaskProvider>
   );
 };
 

@@ -1,4 +1,5 @@
 import type {
+  Task,
   TaskAction,
   TaskContextType,
   TaskState,
@@ -6,6 +7,7 @@ import type {
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useReducer,
   type PropsWithChildren,
@@ -61,10 +63,17 @@ export const useTask = () => {
   return context;
 };
 
-const TaskProvider = ({ children }: PropsWithChildren) => {
+const TaskProvider = ({
+  children,
+  tasks,
+}: PropsWithChildren & { tasks: Task[] }) => {
   const [taskState, setTaskState] = useReducer(reducer, initialTaskState);
 
   const value = useMemo(() => ({ taskState, setTaskState }), [taskState]);
+
+  useEffect(() => {
+    setTaskState({ type: "ADD_TASK", tasks });
+  }, [tasks]);
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
 };

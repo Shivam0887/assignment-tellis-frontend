@@ -1,14 +1,31 @@
+import { BASE_URL } from "@/lib/constants";
 import { useAuth } from "@/providers/AuthProvider";
 import { useEffect, type PropsWithChildren } from "react";
 import { useNavigate } from "react-router";
 
 const ProtectedRoute = ({ children }: PropsWithChildren) => {
-  const { user } = useAuth();
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user === null) navigate("/login", { replace: true });
-  }, [navigate, user]);
+    const getUser = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/user`, {
+          credentials: "include",
+        });
+        const data = await response.json();
+
+        if (data === null) navigate("/login", { replace: true });
+        if (response.ok) {
+          setUser({ ...data });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUser();
+  }, [navigate, setUser]);
 
   return <>{children}</>;
 };
