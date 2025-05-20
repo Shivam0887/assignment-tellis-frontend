@@ -15,13 +15,11 @@ const ProtectedRoute = ({ children }: PropsWithChildren) => {
         });
         const data = await response.json();
 
-        if (data === null) navigate("/login", { replace: true });
-        if (response.ok) {
-          setUser({ ...data });
-        }
+        if (response.ok) setUser({ ...data });
+        else navigate("/login", { replace: true });
       } catch (error) {
         console.log(error);
-        navigate("/login", { replace: true });
+        navigate("/", { replace: true });
       }
     };
 
